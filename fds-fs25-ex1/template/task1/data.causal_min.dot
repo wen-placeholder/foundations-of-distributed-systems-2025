@@ -1,0 +1,20 @@
+digraph G {
+  rankdir=LR;
+  "A1" [shape=box];
+  "A2" [shape=box];
+  "B1" [shape=box];
+  "B2" [shape=box];
+  "C1" [shape=box];
+  "C2" [shape=box];
+  "D1" [shape=box];
+  "D2" [shape=box];
+  "C1" -> "C2";
+  "B2" -> "C1";
+  "D1" -> "D2";
+  "B2" -> "A1";
+  "C2" -> "D2";
+  "B1" -> "B2";
+  "A1" -> "A2";
+  "B1" -> "D1";
+  "A2" -> "D2";
+}

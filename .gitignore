@@ -1,0 +1,53 @@
+# ---- OS / Editors ----
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+# Environment variable files (keep a template in repo)
+.env
+.env.*
+!.env.example
+
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+.ipynb_checkpoints/
+
+# Generated gRPC files (optional to ignore; keep them if you want the repo to run without a protoc step)
+# *_pb2.py
+# *_pb2_grpc.py
+
+# ---- Node / JS ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+.eslintcache
+.parcel-cache/
+.cache/
+
+# Common build outputs  (for various frameworks)
+.next/
+.nuxt/
+out/
+dist/
+build/
+
+# ---- Logs ----
+logs/
+*.log

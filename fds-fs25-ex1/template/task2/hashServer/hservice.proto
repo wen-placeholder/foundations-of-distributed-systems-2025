@@ -1,0 +1,10 @@
+syntax = "proto3";
+package Hash;
+
+message Response {string hash = 1;}
+message Request {string passcode =1;string ip=2; uint32 port = 3;}
+
+service HS
+{
+    rpc GetHash(Request) returns (Response);
+}

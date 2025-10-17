@@ -1,51 +1,51 @@
 class CLS:
     def __init__(self):
-        # 存储元素的字典，key为元素值，value为整数计数器
+        # Dictionary to store elements, key is element value, value is integer counter
         self.A = {}
     
     def add(self, e):
-        """添加元素"""
+        """Add element"""
         if e not in self.A:
-            self.A[e] = 1  # 初始化为1（奇数，表示存在）
-        elif self.A[e] % 2 == 0:  # 如果当前是偶数
-            self.A[e] = self.A[e] + 1  # 变为奇数（表示存在）
-        # 如果当前已经是奇数，不做任何操作（幂等性）
+            self.A[e] = 1  # Initialize to 1 (odd, represents presence)
+        elif self.A[e] % 2 == 0:  # If currently even
+            self.A[e] = self.A[e] + 1  # Change to odd (represents presence)
+        # If already odd, do nothing (idempotent)
     
     def remove(self, e):
-        """移除元素"""
-        if e in self.A and self.A[e] % 2 == 1:  # 如果存在且当前是奇数
-            self.A[e] = self.A[e] + 1  # 变为偶数（表示不存在）
-        # 如果元素不存在或已经是偶数，不做任何操作
+        """Remove element"""
+        if e in self.A and self.A[e] % 2 == 1:  # If exists and currently odd
+            self.A[e] = self.A[e] + 1  # Change to even (represents absence)
+        # If element doesn't exist or is already even, do nothing
     
     def contains(self, e):
-        """检查元素是否存在"""
-        return (e in self.A) and (self.A[e] % 2 == 1)  # 存在且为奇数
+        """Check if element exists"""
+        return (e in self.A) and (self.A[e] % 2 == 1)  # Exists and is odd
     
     def mutual_sync(self, other_lists):
-        """与其他CLS实例进行双向同步"""
+        """Perform bidirectional synchronization with other CLS instances"""
         for other in other_lists:
             self._merge(other)
             other._merge(self)
     
     def _merge(self, other):
-        """合并另一个CLS实例的状态"""
-        # 获取所有元素的并集
+        """Merge state from another CLS instance"""
+        # Get union of all elements
         all_elements = set(self.A.keys()) | set(other.A.keys())
         
         for e in all_elements:
-            # 取两个实例中的最大值
+            # Take the maximum value from both instances
             self_val = self.A.get(e, 0)
             other_val = other.A.get(e, 0)
             self.A[e] = max(self_val, other_val)
     
     def __str__(self):
-        """返回当前集合中的元素（用于调试）"""
+        """Return current elements in the set (for debugging)"""
         items = [elem for elem in self.A if self.contains(elem)]
         return f"CLS{set(items)}"
 
-# 测试代码
+# Test code
 if __name__ == "__main__":
-    # 模拟共享购物车场景
+    # Simulate shared shopping cart scenario
     alice_list = CLS()
     bob_list = CLS()
 
@@ -64,16 +64,16 @@ if __name__ == "__main__":
     alice_list.remove('Potato')
     alice_list.mutual_sync([bob_list])
 
-    print("Bob's list contains 'Potato' ?", bob_list.contains('Potato'))
+    print("Bob's list contains 'Potato'?", bob_list.contains('Potato'))
     print("Alice's list:", alice_list)
     print("Bob's list:", bob_list)
     
-    # 额外测试：验证奇偶逻辑
-    print("\n额外测试:")
+    # Additional test: verify odd-even logic
+    print("\nAdditional test:")
     test = CLS()
     test.add('Apple')
-    print("添加Apple后计数:", test.A.get('Apple'), "存在:", test.contains('Apple'))
+    print("After adding Apple - count:", test.A.get('Apple'), "exists:", test.contains('Apple'))
     test.remove('Apple')
-    print("移除Apple后计数:", test.A.get('Apple'), "存在:", test.contains('Apple'))
+    print("After removing Apple - count:", test.A.get('Apple'), "exists:", test.contains('Apple'))
     test.add('Apple')
-    print("再次添加Apple后计数:", test.A.get('Apple'), "存在:", test.contains('Apple'))
+    print("After adding Apple again - count:", test.A.get('Apple'), "exists:", test.contains('Apple'))

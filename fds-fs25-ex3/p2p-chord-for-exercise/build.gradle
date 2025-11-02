@@ -1,0 +1,79 @@
+group 'ch.unibas.dmi.dbis'
+version '1.0.1'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.gradle:osdetector-gradle-plugin:1.7.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.google.osdetector'
+
+mainClassName = 'ch.unibas.dmi.dbis.fds.p2p.ui.Main'
+
+ext.platform = osdetector.os == 'osx' ? 'mac' : osdetector.os == 'windows' ? 'win' : osdetector.os
+if (osdetector.arch == "aarch_64") {
+    platform += "-aarch64"
+}
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    /* Log 4J. */
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
+
+    /* Fontawesome FX */
+    implementation group: 'de.jensd', name: 'fontawesomefx-commons', version: '9.1.2'
+    implementation group: 'de.jensd', name: 'fontawesomefx-fontawesome', version: '4.7.0-9.1.2'
+
+    /* Open JFX 11 */
+    implementation "org.openjfx:javafx-base:17.0.16:$platform"
+    implementation "org.openjfx:javafx-graphics:17.0.16:$platform"
+    implementation "org.openjfx:javafx-controls:17.0.16:$platform"
+    implementation "org.openjfx:javafx-web:17.0.16:$platform"
+
+    /* JUnit 5 */
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.9.1'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest{
+        attributes 'Main-Class': 'ch.unibas.dmi.dbis.fds.p2p.ui.ChordApplication'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+processResources {
+    exclude 'log4j2-test.xml'
+}
+
+/**
+ * From:  https://github.com/nostra13/Android-Universal-Image-Loader/issues/1086
+ */
+tasks.withType(Javadoc) {
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+    options.addStringOption('Xdoclint:none', '-quiet')
+}

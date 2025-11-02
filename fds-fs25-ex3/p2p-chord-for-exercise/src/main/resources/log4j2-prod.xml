@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration name="FDS-Chord-Config" status="INFO">
+    <Properties>
+        <Property name="loggingPattern">[%d{dd.MM.yyyy HH:mm:ss.SSS}][%-5level][%t] %C{1} - %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${loggingPattern}"/>
+        </Console>
+        <RollingFile name="rollingFile" fileName="logs/p2p-chord.log" filePattern="logs/$${date:yyyy-MM}/p2p-chord-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="${loggingPattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- GENERAL org packages -->
+        <Logger name="org" level="ERROR" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <!-- GENERAL dbis packages -->
+        <Logger name="ch.unibas.dmi.dbis" level="ERROR" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <!-- P2P API packages -->
+        <Logger name="ch.unibas.dmi.dbis.fds.p2p.api" level="INFO" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <!-- ROOT -->
+        <Root level="ERROR" />
+    </Loggers>
+</Configuration>

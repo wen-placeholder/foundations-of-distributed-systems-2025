@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) Databases and Information Systems Research Group, University of Basel, Switzerland
+ */
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        // Shadowing; used to make a fat jar
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:8.3.5'
+    }
+}
+
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+
+apply plugin: 'application'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'java'
+
+group 'ch.unibas.dmi.dbis'
+version '1.0'
+
+
+mainClassName = "ch.unibas.dmi.dbis.fds._2pc.XaBankingAppTest"
+
+
+compileJava.options.encoding = 'UTF-8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+
+        inheritOutputDirs = false
+        outputDir = file("${project.buildDir}/classes/main")
+        testOutputDir = file("${project.buildDir}/classes/test")
+    }
+}
+
+
+dependencies {
+    ////// Oracle JDBC Driver (works with JDK 11 and 17).
+    implementation group: 'com.oracle.database.jdbc', name: 'ojdbc11', version: '21.1.0.0'
+
+    ////// JUNIT
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.1'
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.1'
+    implementation group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.9.1'
+}
+
+
+jar {
+    manifest {
+        attributes "Manifest-Version": "1.0"
+        attributes "Copyright": "Databases and Information Systems Group, Department Mathematics and Computer Science, University of Basel, Switzerland"
+        attributes "Version": "$archiveVersion"
+        attributes "Main-Class": mainClassName
+    }
+}

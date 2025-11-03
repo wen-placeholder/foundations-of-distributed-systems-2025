@@ -1,0 +1,6 @@
+/*
+ * Copyright (c) Databases and Information Systems Research Group, University of Basel, Switzerland
+ */
+
+rootProject.name = 'fds-2pc'
+

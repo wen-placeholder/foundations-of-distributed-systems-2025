@@ -108,22 +108,40 @@ public abstract class AbstractOracleXaBank {
     public Xid startTransaction() throws XAException {
         final Xid xid = this.getXid();
 
-        // TODO: your turn ;-)
-        throw new UnsupportedOperationException( "Implement me :-)" );
+        // Start a new transaction branch with the generated Xid
+        xaResource.start( xid, XAResource.TMNOFLAGS );
+        return xid;
     }
 
 
     public Xid startTransaction( final Xid globalTransactionId ) throws XAException {
         final Xid xid = this.getXid( globalTransactionId );
 
-        // TODO: your turn ;-)
-        throw new UnsupportedOperationException( "Implement me :-)" );
+        // Start a transaction branch using the provided global transaction ID
+        xaResource.start( xid, XAResource.TMNOFLAGS );
+        return xid;
     }
 
 
     public void endTransaction( final Xid transactionId, final boolean rollback ) throws XAException {
-        // TODO: your turn ;-)
-        throw new UnsupportedOperationException( "Implement me :-)" );
+        // End the transaction branch
+        xaResource.end( transactionId, XAResource.TMSUCCESS );
+
+        if ( rollback ) {
+            // Rollback without prepare phase
+            xaResource.rollback( transactionId );
+        } else {
+            // Prepare phase (phase 1 of 2PC)
+            int prepareResult = xaResource.prepare( transactionId );
+
+            // Commit phase (phase 2 of 2PC)
+            if ( prepareResult == XAResource.XA_OK ) {
+                xaResource.commit( transactionId, false );
+            } else {
+                // If prepare returns XA_RDONLY, the transaction is already committed
+                // No need to call commit explicitly
+            }
+        }
     }
 
 

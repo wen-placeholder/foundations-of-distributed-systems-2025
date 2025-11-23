@@ -1,0 +1,13 @@
+#!/bin/bash
+#SBATCH --job-name=my_job    # The name of the job
+#SBATCH --partition=xeon     # The main partition of miniHPC
+#SBATCH --hint=nomultithread # Disable hardware multithreading
+#SBATCH --exclusive          # Exclusive access to resources
+#SBATCH --time=00:10:00      # Requested execution time
+#SBATCH --nodes=1            # Requested number of nodes
+#SBATCH --ntasks-per-node=1  # Requested processes per node
+#SBATCH --cpus-per-task=1    # Requested threads per process
+
+# Tell Slurm to execute something (e.g. your code)
+# We execute the hostname command as a placeholder
+srun hostname

@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --job-name=task2_increased
+#SBATCH --nodes=4
+#SBATCH --ntasks-per-node=2
+#SBATCH --time=00:05:00
+#SBATCH --partition=xeon
+#SBATCH --hint=nomultithread
+
+module load OpenMPI/5.0.3-GCC-13.3.0
+
+srun --mpi=pmix ./task2_blocking

@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --job-name=task1_A
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=00:05:00
+#SBATCH --partition=xeon
+#SBATCH --hint=nomultithread
+
+module load OpenMPI/5.0.3-GCC-13.3.0
+
+srun --mpi=pmix ./task1_hello
